@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GitHub\LibAtem\LibAtem\LibAtem.csproj" />
+    <ProjectReference Include="..\..\LibAtem\LibAtem\LibAtem.csproj" />
   </ItemGroup>
 
 </Project>
