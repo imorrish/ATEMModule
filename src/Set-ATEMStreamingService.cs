@@ -9,35 +9,6 @@ using LibAtem.Net;
 
 namespace ATEMModule
 {
-    [Cmdlet(VerbsCommon.Set,"ATEMStreamingStatus")]
-        [OutputType(typeof(bool))]
-    public class ATEMStreamingStatus : PSCmdlet
-    {
-        [Parameter(
-            Mandatory = true,
-            Position = 0,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true)]
-        public AtemClient ATEMref { get; set; }
-        [Parameter(
-            Mandatory = true,
-            Position = 1,
-            ValueFromPipeline = true,            
-            ValueFromPipelineByPropertyName = true)]
-        public bool StreamStatus { get; set; }
-        protected override void BeginProcessing()
-            {
-                WriteVerbose("Begin!");
-            }
-        protected override void ProcessRecord()
-            {
-                    ATEMref.SendCommand(new StreamingStatusSetCommand { IsStreaming=StreamStatus});
-            }
-        protected override void EndProcessing()
-            {
-                WriteVerbose("End!");
-            }
-    }    
 [Cmdlet(VerbsCommon.Set,"ATEMStreamingService")]
         [OutputType(typeof(bool))]
     public class ATEMStreamingService : PSCmdlet
