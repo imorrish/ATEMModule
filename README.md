@@ -6,24 +6,24 @@ It is written for .Net Core 3.0 and has been tested on Windows, Mac OSx and Linu
 
 ### Functionality
 
-You can connect to multiple ATEM's. E.g.
-$AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
+You can connect to multiple ATEM's. E.g.  
+$AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"  
 $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.71"
 
-Using Mix Effect commands:
+Using Mix Effect commands:  
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
 
-Where parameters are requires, they are positional so the -directive can be omitted. E.g.
+Where parameters are requires, they are positional so the -directive can be omitted. E.g.  
 Set-ATEMMEProgramSource $AtemMini 0 1
 
-Other commands:
-Set-AtemPreviewSource
-Set-ATEMMEAutoTransition
-Set-ATEMMECut
-Set-ATEMMEFadeToBlack
+Other commands:  
+Set-AtemPreviewSource  
+Set-ATEMMEAutoTransition  
+Set-ATEMMECut  
+Set-ATEMMEFadeToBlack  
 
-Set-ATEMAuxSource
-Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $true
+Set-ATEMAuxSource  
+Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $true  
 
 ### License
 
