@@ -50,7 +50,6 @@ namespace ATEMModule
     }
 // set program input
     [Cmdlet(VerbsCommon.Get,"ATEMMEProgramSource")]
-        [OutputType(typeof(int))]
     public class ATEMMEProgramSourceGet : PSCmdlet
     {
         [Parameter(
@@ -66,7 +65,7 @@ namespace ATEMModule
             ValueFromPipelineByPropertyName = true)]
         public int MEID { get; set; }
 
-        public int InputID { get; set; }
+        //public int InputID { get; set; }
         protected override void BeginProcessing()
         {
             WriteVerbose("Begin!");
@@ -74,8 +73,10 @@ namespace ATEMModule
         protected override void ProcessRecord()
         {
             
-            ATEMref.SendCommand(new ProgramInputGetCommand {Index = (MixEffectBlockId)MEID});
-            WriteObject(true);
+            ProgramInputGetCommand progGet = new ProgramInputGetCommand{Index = (MixEffectBlockId)MEID};
+            ATEMref.SendCommand(progGet );
+            //TODO: How to get values back?
+            WriteObject(progGet, true);
         }
         protected override void EndProcessing()
         {

@@ -1,7 +1,9 @@
-Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.dll
-Import-Module '.\bin\Debug\netstandard2.0\ATEMModule.dll'
+#Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.dll # use for testing LibATEM commands
+Import-Module '.\src\bin\Debug\netstandard2.0\ATEMModule.dll'
+Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
+
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
-$AtemMini2 = Add-ATEMSwitch -IPAddress "192.168.1.10"
+$AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.71"
 function Set-AtemProgramInput([int]$source)
 {
@@ -58,10 +60,10 @@ $audio.FaderGain=100
 $audio.Gain=100111
 $AtemMini.SendCommand($Audio)
 
-$AudioFollowVideo=[LibAtem.Commands.Audio.Fairlight.
+
 
 $AudioFollowVideo=[LibAtem.Commands.Audio.Fairlight.FairlightMixerMasterPropertiesSetCommand]::new()
-$AudioFollowVideo.
+$AudioFollowVideo
 $AudioFollowVideo.AudioFollowVideoCrossfadeTransitionEnabled =0
 $AtemMini.SendCommand($AudioFollowVideo)
 
@@ -87,7 +89,7 @@ Set-ATEMMETransitionType $AtemMini 1 xxx
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemMini 0 1
+Set-ATEMMEProgramSource $AtemMini 0 2
 
 set-ATEMMEPreviewSource $AtemMini 0 2
 
@@ -108,3 +110,5 @@ Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
 Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
 
 Set-ATEMAuxSource $AtemMini 0 2
+
+Get-ATEMMEProgramSource $AtemMini 0
