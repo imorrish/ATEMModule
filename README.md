@@ -4,6 +4,8 @@ This is a PowerShell module for controling Blackmagic ATEM video switches using 
 
 It is written for .Net Core 3.0 and has been tested on Windows, Mac OSx and Linux (including Raspberry Pi)
 
+## Very alpha. No version number and lots of trial and error in the code.
+
 ### Functionality
 
 You can connect to multiple ATEM's. E.g.  
@@ -11,13 +13,17 @@ $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
 $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.71"
 
 Using Mix Effect commands:  
-Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
+Set-ATEMMEProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
 
 Where parameters are requires, they are positional so the -directive can be omitted. E.g.  
 Set-ATEMMEProgramSource $AtemMini 0 1
 
+Set-ATEMMETransitionProperties $AtemMini 0 -TransitionType DIP #Mix Dip Wipe Stinger
+
+Set-ATEMMEWipeParameters $AtemMini 0 TopToBottomBar
+
 Other commands:  
-Set-AtemPreviewSource  
+Set-ATEMMEPreviewSource  
 Set-ATEMMEAutoTransition  
 Set-ATEMMECut  
 Set-ATEMMEFadeToBlack  

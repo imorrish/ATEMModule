@@ -11,7 +11,7 @@ using LibAtem.Net;
 namespace ATEMModule
 {
 //TransitionWipeSetCommand
-    [Cmdlet(VerbsCommon.Set,"ATEMMEWipe")]
+    [Cmdlet(VerbsCommon.Set,"ATEMMETransitionWipe")]
         [OutputType(typeof(bool))]
     public class ATEMMEWipeSetCommand : PSCmdlet
     {

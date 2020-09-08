@@ -1,10 +1,53 @@
 #Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.dll # use for testing LibATEM commands
+# Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.Discovery.dll
+
 Import-Module '.\src\bin\Debug\netstandard2.0\ATEMModule.dll'
 Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
 
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
-$AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.71"
+$AtemMiniProISO = Add-ATEMSwitch -IPAddress "192.168.1.71"
+
+#program and preview testing
+Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
+Set-ATEMMEProgramSource $AtemMini 0 3
+set-ATEMMEPreviewSource $AtemMini 0 2
+
+Set-ATEMMECut -ATEMref $AtemMini -MEID 0
+
+Set-ATEMMEAutoTransition -ATEMref $AtemMini -MEID 0
+Set-ATEMMEAutoTransition $AtemMini 0
+
+Set-ATEMMEFadeToBlack $AtemMini 0
+
+Set-ATEMMETransitionProperties $AtemMini 0 -TransitionType DIP #Mix Dip Wipe Stinger
+Set-ATEMMETransitionProperties $AtemMini 0 -NextSelection Background #Key1 Key2
+Set-ATEMMETransitionProperties $AtemMini 0 -TransitionType Mix -NextSelection Key1
+
+Set-ATEMMEWipeParameters $AtemMini 0 TopToBottomBar
+
+Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
+Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
+
+Set-ATEMAuxSource $AtemMini 0 2
+
+# Ignore everything below
+
+$AuxiliaryInputMacroOp = [LibAtem.MacroOperations.AuxiliaryInputMacroOp]::new()
+$AuxiliaryInputMacroOp.Index =0
+$AuxiliaryInputMacroOp.Source=4
+$AuxiliaryInputMacroOp
+[LibAtem.MacroOperations.MacroOpExtensions]::ToByteArray($AuxiliaryInputMacroOp)
+
+
+$AtemFTB = [LibAtem.MacroOperations.MixEffects.FadeToBlackAutoMacroOp]::new()
+$AtemFTB.Index =0 #ME1
+[LibAtem.MacroOperations.MacroOpExtensions]::ToByteArray($AtemFTB)
+
+
+$devices = [LibAtem.Discovery.AtemDiscoveryService]::new()
+
+
 function Set-AtemProgramInput([int]$source)
 {
     $AtemProgSet = [LibAtem.Commands.MixEffects.ProgramInputSetCommand]::New()
@@ -66,49 +109,3 @@ $AudioFollowVideo=[LibAtem.Commands.Audio.Fairlight.FairlightMixerMasterProperti
 $AudioFollowVideo
 $AudioFollowVideo.AudioFollowVideoCrossfadeTransitionEnabled =0
 $AtemMini.SendCommand($AudioFollowVideo)
-
-
-$cmdCaptureStill=[LibAtem.Commands.Media.MediaPoolCaptureStillCommand]::new()
-$AtemMini.SendCommand($cmdCaptureStill)
-
-$streamingService=[LibAtem.Commands.Streaming.StreamingServiceSetCommand]::new()
-$streamingService.Key = "234567890"
-$streamingService.ServiceName="Facebook"
-$streamingService.Url="https://facebook.com"
-$streamingService.Bitrates=(4000,5000)
-
-$streamingService=[LibAtem.Commands.Streaming.StreamingStatusSetCommand]::new()
-$streamingService.IsStreaming =1
-$AtemMini.SendCommand($streamingService)
-
-Set-ATEMMECut -ATEMref $AtemMini -MEID 0
-Set-ATEMMEAutoTransition -ATEMref $AtemMini -MEID 0
-Set-ATEMMEAutoTransition $AtemMini 0
-
-Set-ATEMMETransitionType $AtemMini 1 xxx
-
-#program and preview testing
-Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemMini 0 2
-
-set-ATEMMEPreviewSource $AtemMini 0 2
-
-Set-ATEMMEFadeToBlack $AtemMini 0
-
-Get-ATEMMEProgramSource $AtemMini 0
-
-
-$inputid = [LibAtem.Commands.MixEffects.ProgramInputGetCommand]::new()
-$inputid.Index=0
-$inputid.Source
-$AtemMini.SendCommand($inputid)
-$input2.GetType()
-Set-ATEMMETransitionType $AtemMini 0 Wipe
-
-Set-ATEMMEWipeParameters $AtemMini 0 TopToBottomBar
-Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
-Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
-
-Set-ATEMAuxSource $AtemMini 0 2
-
-Get-ATEMMEProgramSource $AtemMini 0
