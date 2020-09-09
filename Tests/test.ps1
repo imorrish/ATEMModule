@@ -6,7 +6,7 @@ Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
 
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
-$AtemMiniProISO = Add-ATEMSwitch -IPAddress "192.168.1.71"
+$AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
@@ -24,7 +24,9 @@ Set-ATEMMETransitionProperties $AtemMini 0 -TransitionType DIP #Mix Dip Wipe Sti
 Set-ATEMMETransitionProperties $AtemMini 0 -NextSelection Background #Key1 Key2
 Set-ATEMMETransitionProperties $AtemMini 0 -TransitionType Mix -NextSelection Key1
 
-Set-ATEMMEWipeParameters $AtemMini 0 TopToBottomBar
+Set-ATEMMETransitionDVE $AtemISO 0 -Style PushBottom
+
+Set-ATEMMETransitionWipe $AtemISO 0 -SelectPattern CircleIris
 
 Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
 Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
