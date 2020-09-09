@@ -43,8 +43,7 @@ namespace ATEMModule
                 WriteVerbose("Begin!");
             }
         protected override void ProcessRecord()
-            {
-                ATEMref.SendCommand(new TransitionMixSetCommand { Index = (MixEffectBlockId)MEID, Rate=Rate });
+            {                
                 if(MyInvocation.BoundParameters.ContainsKey("Rate")) {
                     ATEMref.SendCommand(new TransitionDipSetCommand {Mask = TransitionDipSetCommand.MaskFlags.Rate, Index =(MixEffectBlockId)MEID, Rate=Rate});
                 }
