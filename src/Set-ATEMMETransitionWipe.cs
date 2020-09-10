@@ -43,6 +43,41 @@ namespace ATEMModule
                 ValueFromPipeline = true,            
                 ValueFromPipelineByPropertyName = true)]
             public Int16 BorderWidth;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public int BorderInput;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public Int16 Symmetry;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public Int16 BorderSoftness;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public Int16 XPosition;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public Int16 YPosition;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public bool ReverseDirection;
+            [Parameter(
+                Mandatory = false,
+                ValueFromPipeline = true,            
+                ValueFromPipelineByPropertyName = true)]
+            public bool FlipFlop;
             protected override void BeginProcessing()
             {
                 WriteVerbose("Begin!");
@@ -56,8 +91,29 @@ namespace ATEMModule
                 if(MyInvocation.BoundParameters.ContainsKey("SetRate")) {
                     ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.Rate, Index =(MixEffectBlockId)MEID, Rate=SetRate});
                 }
+                if(MyInvocation.BoundParameters.ContainsKey("BorderInput")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.BorderInput, Index =(MixEffectBlockId)MEID, BorderInput=(VideoSource)BorderInput});
+                }
                 if(MyInvocation.BoundParameters.ContainsKey("BorderWidth")) {
                     ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.BorderWidth, Index =(MixEffectBlockId)MEID, BorderWidth=BorderWidth});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("Symmetry")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.Symmetry, Index =(MixEffectBlockId)MEID, Symmetry=Symmetry});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("BorderSoftness")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.BorderSoftness, Index =(MixEffectBlockId)MEID, BorderSoftness=BorderSoftness});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("XPosition")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.XPosition, Index =(MixEffectBlockId)MEID, XPosition=XPosition});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("YPosition")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.YPosition, Index =(MixEffectBlockId)MEID, YPosition=YPosition});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("ReverseDirection")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.ReverseDirection, Index =(MixEffectBlockId)MEID, ReverseDirection=ReverseDirection});
+                }
+                if(MyInvocation.BoundParameters.ContainsKey("FlipFlop")) {
+                    ATEMref.SendCommand(new TransitionWipeSetCommand {Mask = TransitionWipeSetCommand.MaskFlags.FlipFlop, Index =(MixEffectBlockId)MEID, FlipFlop=FlipFlop});
                 }
                 WriteObject(true);
             }
