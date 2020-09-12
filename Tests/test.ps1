@@ -10,7 +10,7 @@ $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemMini 0 3
+Set-ATEMMEProgramSource $AtemISO 0 1
 set-ATEMMEPreviewSource $AtemMini 0 2
 
 Set-ATEMMECut -ATEMref $AtemMini -MEID 0
@@ -32,6 +32,8 @@ Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
 Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
 
 Set-ATEMAuxSource $AtemMini 0 2
+
+Set-ATEMMEKeyFlyRunTo -ATEMRef $AtemISO -MEID 0 -KeyerIndex 0 -KeyFrame B -RunToInfinite TopRight #must speciy RunToInfinite param even if going to A or B
 
 # Ignore everything below
 

@@ -27,6 +27,7 @@ public class ATEMMEKeyFlyRunTo : PSCmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public int MEID { get; set; }
+        //[ValidateSet("One","Two","Three","Four")]
         [Parameter(
             Mandatory = true,
             Position = 2,
@@ -39,21 +40,24 @@ public class ATEMMEKeyFlyRunTo : PSCmdlet
             Position = 3,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public int KeyFrame { get; set; }
+        public string KeyFrame { get; set; }
         [ValidateSet("CentreOfKey","TopLeft","TopCentre","TopRight","MiddleLeft","MiddleCentre","MiddleRight","BottomLeft","BottomCentre","BottomRight")]
         [Parameter(
             Mandatory = true,
             Position = 4,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public int RunToInfinite { get; set; }
+        public string RunToInfinite { get; set; }
         protected override void BeginProcessing()
         {
             WriteVerbose("Begin!");
         }
         protected override void ProcessRecord()
         {
-            ATEMref.SendCommand(new MixEffectKeyFlyRunSetCommand {MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex = (UpstreamKeyId)KeyerIndex,KeyFrame=(FlyKeyKeyFrameType)KeyFrame,RunToInfinite=(FlyKeyLocation)RunToInfinite});
+            //UpstreamKeyId enumKeyerIndex = (UpstreamKeyId)Enum.Parse(typeof(UpstreamKeyId), KeyerIndex);
+            FlyKeyKeyFrameType enumKeyFrame = (FlyKeyKeyFrameType)Enum.Parse(typeof(FlyKeyKeyFrameType), KeyFrame);
+            FlyKeyLocation enumKeyFrameRunTo = (FlyKeyLocation)Enum.Parse(typeof(FlyKeyLocation), RunToInfinite);
+            ATEMref.SendCommand(new MixEffectKeyFlyRunSetCommand {MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex = (UpstreamKeyId)KeyerIndex,KeyFrame=enumKeyFrame,RunToInfinite=enumKeyFrameRunTo});
             WriteObject(true);
         }
         protected override void EndProcessing()
