@@ -3,15 +3,15 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Collections.Generic;
 using LibAtem.Commands;
-using LibAtem.Commands.Streaming;
+using LibAtem.Commands.Recording;
 using LibAtem.Common;
 using LibAtem.Net;
 
 namespace ATEMModule
 {
-[Cmdlet(VerbsCommon.Set,"ATEMStreamingService")]
+[Cmdlet(VerbsCommon.Set,"ATEMRecordingSettings")]
         [OutputType(typeof(bool))]
-    public class ATEMStreamingService : PSCmdlet
+    public class ATEMRecordingSettings : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -23,40 +23,40 @@ namespace ATEMModule
             Mandatory = false,
             ValueFromPipeline = true,            
             ValueFromPipelineByPropertyName = true)]
-        public string ServiceName { get; set; }
+        public string Filename { get; set; }
         [Parameter(
             Mandatory = false,
             ValueFromPipeline = true,            
             ValueFromPipelineByPropertyName = true)]
-        public string Url { get; set; }
+        public UInt32 WorkingSet1DiskId { get; set; }
         [Parameter(
             Mandatory = false,
             ValueFromPipeline = true,            
             ValueFromPipelineByPropertyName = true)]
-        public string Key { get; set; }
+        public UInt32 WorkingSet2DiskId { get; set; }
         [Parameter(
             Mandatory = false,
             ValueFromPipeline = true,            
             ValueFromPipelineByPropertyName = true)]
-        public uint[] Bitrates { get; set; }
+        public bool RecordInAllCameras { get; set; }
         protected override void BeginProcessing()
             {
                 WriteVerbose("Begin!");
             }
         protected override void ProcessRecord()
             { try{
-                if(MyInvocation.BoundParameters.ContainsKey("ServiceName")) {
-                    ATEMref.SendCommand(new StreamingServiceSetCommand {Mask = StreamingServiceSetCommand.MaskFlags.ServiceName, ServiceName=ServiceName});
+                if(MyInvocation.BoundParameters.ContainsKey("Filename")) {
+                    ATEMref.SendCommand(new RecordingSettingsSetCommand {Mask = RecordingSettingsSetCommand.MaskFlags.Filename, Filename=Filename});
                 }
-                if(MyInvocation.BoundParameters.ContainsKey("Url")) {
-                    ATEMref.SendCommand(new StreamingServiceSetCommand {Mask = StreamingServiceSetCommand.MaskFlags.Url, Url=Url});
+                if(MyInvocation.BoundParameters.ContainsKey("WorkingSet1DiskId")) {
+                    ATEMref.SendCommand(new RecordingSettingsSetCommand {Mask = RecordingSettingsSetCommand.MaskFlags.WorkingSet1DiskId, WorkingSet1DiskId=WorkingSet1DiskId});
                 }
-                if(MyInvocation.BoundParameters.ContainsKey("Key")) {
-                    ATEMref.SendCommand(new StreamingServiceSetCommand {Mask = StreamingServiceSetCommand.MaskFlags.Key, Key=Key});
+                if(MyInvocation.BoundParameters.ContainsKey("WorkingSet2DiskId")) {
+                    ATEMref.SendCommand(new RecordingSettingsSetCommand {Mask = RecordingSettingsSetCommand.MaskFlags.WorkingSet2DiskId, WorkingSet2DiskId=WorkingSet2DiskId});
                 }
-                if(MyInvocation.BoundParameters.ContainsKey("Bitrates")) {
-                    List<uint> list = new List<uint> { Bitrates[0], Bitrates[1]};
-                    ATEMref.SendCommand(new StreamingServiceSetCommand {Mask = StreamingServiceSetCommand.MaskFlags.Bitrates, Bitrates=list});
+                if(MyInvocation.BoundParameters.ContainsKey("RecordInAllCameras")) {
+                    
+                    ATEMref.SendCommand(new RecordingSettingsSetCommand {Mask = RecordingSettingsSetCommand.MaskFlags.RecordInAllCameras, RecordInAllCameras=RecordInAllCameras});
                 }
                 WriteObject(true);
             }catch{
