@@ -28,8 +28,10 @@ Set-ATEMMETransitionDVE $AtemISO 0 -Style PushBottom
 
 Set-ATEMMETransitionWipe $AtemISO 0 -SelectPattern CircleIris
 
-Set-ATEMStreaming -ATEMref $AtemMini -StreamKey "34565543"
-Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $false
+Set-ATEMStreaming -ATEMref $Atemiso -Url "https://localhost"
+Set-ATEMStreamingService -ATEMref $AtemIso -ServiceName "Facebook"
+Set-ATEMStreamingService -ATEMref $AtemIso -Key "kt4y-qpcp-pq9q-mtdv-dkfx"
+Set-ATEMStreamingStatus -ATEMref $AtemIso -StreamStatus $false
 
 Set-ATEMAuxSource $AtemMini 0 2
 
