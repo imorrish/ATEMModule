@@ -28,7 +28,7 @@ namespace ATEMModule
         public int DskID { get; set; }
         [Parameter(
             Mandatory = true,
-            Position = 1,
+            Position = 2,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public bool OnAir { get; set; }

@@ -20,27 +20,39 @@ Set-ATEMMEAutoTransition $AtemMini 0
 
 Set-ATEMMEFadeToBlack $AtemMini 0
 
+#DSK
+Set-ATEMDskFillSource $AtemISO 0 1
+Set-ATEMDskOnAir $AtemISO 0 $true
+#Keyer - USK
+
+Set-ATEMMEKeyOnAir $AtemISO 0 -OnAir $true
+Set-ATEMMEKeyFlyRunTo -ATEMRef $AtemISO -MEID 0 -KeyerIndex 0 -KeyFrame B -RunToInfinite TopRight #must speciy RunToInfinite param even if going to A or B
+
+#Transitions
 Set-ATEMMETransitionProperties $AtemISO 0 -TransitionType Dip #Mix Dip Wipe Stinger
 Set-ATEMMETransitionProperties $AtemISO 0 -NextSelection Background #Key1 Key2
 Set-ATEMMETransitionProperties $AtemISO 0 -TransitionType Mix -NextSelection Key1
-
 
 Set-ATEMMETransitionDVE $AtemISO 0 -Style PushBottom
 
 Set-ATEMMETransitionWipe $AtemISO 0 -SelectPattern CircleIris
 
+#Aux
+Set-ATEMAuxSource $AtemMini 0 2
+
+#Streaming
 Set-ATEMStreaming -ATEMref $Atemiso -Url "https://localhost"
 Set-ATEMStreamingService -ATEMref $AtemIso -ServiceName "Facebook"
 Set-ATEMStreamingService -ATEMref $AtemIso -Key "kt4y-qpcp-pq9q-mtdv-dkfx"
 Set-ATEMStreamingStatus -ATEMref $AtemIso -StreamStatus $false
 
-Set-ATEMAuxSource $AtemMini 0 2
-
-Set-ATEMMEKeyFlyRunTo -ATEMRef $AtemISO -MEID 0 -KeyerIndex 0 -KeyFrame B -RunToInfinite TopRight #must speciy RunToInfinite param even if going to A or B
-
-
+#Recording
 Set-ATEMRecordingSettings -ATEMref $AtemISO -Filename "Test123"
 Set-ATEMRecordingSettings -ATEMref $AtemISO -RecordInAllCameras $true
+
+
+
+
 # Ignore everything below
 
 $AuxiliaryInputMacroOp = [LibAtem.MacroOperations.AuxiliaryInputMacroOp]::new()
