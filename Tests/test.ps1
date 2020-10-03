@@ -10,7 +10,7 @@ $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemISO 0 2
+Set-ATEMMEProgramSource $AtemISO 0 1
 set-ATEMMEPreviewSource $AtemMini 0 2
 
 Set-ATEMMECut -ATEMref $AtemMini -MEID 0
@@ -23,6 +23,7 @@ Set-ATEMMEFadeToBlack $AtemMini 0
 #DSK
 Set-ATEMDskFillSource $AtemISO 0 1
 Set-ATEMDskOnAir $AtemISO 0 $true
+Set-ATEMDskTie $AtemISO
 #Keyer - USK
 
 Set-ATEMMEKeyOnAir $AtemISO 0 -OnAir $true
