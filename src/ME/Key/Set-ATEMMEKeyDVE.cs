@@ -32,6 +32,10 @@ public class ATEMMEKeyDve : PSCmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public int KeyerIndex { get; set; }
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipeline = true,
+            ValueFromPipelineByPropertyName = true)]
         public int SizeX { get; set; }
         [Parameter(
             Mandatory = false,
