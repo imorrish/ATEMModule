@@ -10,7 +10,7 @@ $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemISO 0 1
+Set-ATEMMEProgramSource $AtemISO 0 2
 set-ATEMMEPreviewSource $AtemMini 0 2
 
 Set-ATEMMECut -ATEMref $AtemMini -MEID 0
@@ -51,7 +51,8 @@ Set-ATEMStreamingStatus -ATEMref $AtemIso -StreamStatus $false
 Set-ATEMRecordingSettings -ATEMref $AtemISO -Filename "Test123"
 Set-ATEMRecordingSettings -ATEMref $AtemISO -RecordInAllCameras $true
 
-
+#Color Generator
+set-atemc
 
 
 # Ignore everything below
