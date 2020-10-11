@@ -8,7 +8,7 @@ using LibAtem.Net;
 
 namespace ATEMModule
 {
-    [Cmdlet(VerbsCommon.Set,"ATEColorGenerator")]
+    [Cmdlet(VerbsCommon.Set,"ATEMColorGenerator")]
         [OutputType(typeof(bool))]
 public class ATEMColorGenerator : PSCmdlet
     {
