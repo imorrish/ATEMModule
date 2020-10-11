@@ -49,10 +49,10 @@ public class ATEMColorGenerator : PSCmdlet
             if(MyInvocation.BoundParameters.ContainsKey("Hue")) {
                 ATEMref.SendCommand(new ColorGeneratorSetCommand {Mask = ColorGeneratorSetCommand.MaskFlags.Hue, Index = (ColorGeneratorId)ColorGeneratorId, Hue=Hue});
             }
-            if(MyInvocation.BoundParameters.ContainsKey("Gain")) {
+            if(MyInvocation.BoundParameters.ContainsKey("Saturation")) {
                 ATEMref.SendCommand(new ColorGeneratorSetCommand {Mask = ColorGeneratorSetCommand.MaskFlags.Saturation, Index = (ColorGeneratorId)ColorGeneratorId, Saturation=Saturation});
             }
-            if(MyInvocation.BoundParameters.ContainsKey("YSuppress")) {
+            if(MyInvocation.BoundParameters.ContainsKey("Luma")) {
                 ATEMref.SendCommand(new ColorGeneratorSetCommand {Mask = ColorGeneratorSetCommand.MaskFlags.Luma, Index = (ColorGeneratorId)ColorGeneratorId, Luma=Luma});
             }
                         
