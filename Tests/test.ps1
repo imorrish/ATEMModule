@@ -52,7 +52,14 @@ Set-ATEMRecordingSettings -ATEMref $AtemISO -Filename "Test123"
 Set-ATEMRecordingSettings -ATEMref $AtemISO -RecordInAllCameras $true
 
 #Color Generator
-set-atemc
+Set-ATEMColorGenerator $AtemISO 0 -Hue 220  -Saturation 20 -Luma 80
+
+#TimeCode
+Set-ATEMTimeCodeConfig  $AtemISO -Mode FreeRun
+Set-ATEMTimeCode -ATEMref $AtemISO -Hour 00 -Minute 10  -Second 00 -Frame 00 -IsDropFrame $false
+start-sleep 5
+Set-ATEMTimeCodeConfig  $AtemISO -Mode TimeOfDay
+
 
 
 # Ignore everything below
