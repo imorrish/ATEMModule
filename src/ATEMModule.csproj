@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ATEMModule</AssemblyName>
+    <AssemblyVersion>8.5.1.0</AssemblyVersion>
+    <Version>8.5.1.0</Version>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 

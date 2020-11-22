@@ -44,7 +44,7 @@ Set-ATEMAuxSource $AtemMini 0 2
 #Streaming
 Set-ATEMStreaming -ATEMref $Atemiso -Url "https://localhost"
 Set-ATEMStreamingService -ATEMref $AtemIso -ServiceName "Facebook"
-Set-ATEMStreamingService -ATEMref $AtemIso -Key "kt4y-qpcp-pq9q-mtdv-dkfx"
+Set-ATEMStreamingService -ATEMref $AtemIso -Key "abcd"
 Set-ATEMStreamingStatus -ATEMref $AtemIso -StreamStatus $false
 
 #Recording
@@ -60,7 +60,8 @@ Set-ATEMTimeCode -ATEMref $AtemISO -Hour 00 -Minute 10  -Second 00 -Frame 00 -Is
 start-sleep 5
 Set-ATEMTimeCodeConfig  $AtemISO -Mode TimeOfDay
 
-
+# Startup state
+Set-ATEMStartupState $AtemISO
 
 # Ignore everything below
 
