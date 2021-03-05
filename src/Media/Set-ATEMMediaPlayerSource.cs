@@ -3,8 +3,7 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Collections.Generic;
 using LibAtem.Commands;
-using LibAtem.Commands.MixEffects;
-using LibAtem.Commands.MixEffects.Key;
+using LibAtem.Commands.Media;
 using LibAtem.Common;
 using LibAtem.Net;
 
@@ -26,23 +25,24 @@ public class ATEMMediaPlayerSource : PSCmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public int PlayerIndex { get; set; }
+        [ValidateSet("Still","Clip", IgnoreCase = true)]
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             Position = 2,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public int SourceType { get; set; }
+        public MediaPlayerSource SourceType { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public bool StillIndex { get; set; }
+        public uint StillIndex { get; set; }
         [Parameter(
             Mandatory = false,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public int ClipIndex { get; set; }
+        public uint ClipIndex { get; set; }
                 
         protected override void BeginProcessing()
         {
@@ -50,21 +50,16 @@ public class ATEMMediaPlayerSource : PSCmdlet
         }
         protected override void ProcessRecord()
         {
-            if(MyInvocation.BoundParameters.ContainsKey("PreMultiplied")) {
-                ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Mask = MixEffectKeyMaskSetCommand.MaskFlags.MaskEnabled, MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex=(UpstreamKeyId)KeyerIndex,  MaskEnabled=MaskEnabled});
+            //ATEMref.SendCommand(new MediaPlayerSourceSetCommand {SourceType = (MediaPlayerSource)SourceType});
+            //ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Index = (MediaPlayerId)PlayerIndex, SourceType=(MediaPlayerSource)SourceType});
+            if(MyInvocation.BoundParameters.ContainsKey("StillIndex")) {                
+                ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Mask = MediaPlayerSourceSetCommand.MaskFlags.StillIndex, Index = (MediaPlayerId)PlayerIndex, StillIndex = StillIndex});
             }
-            if(MyInvocation.BoundParameters.ContainsKey("MaskTop")) {
-                ATEMref.SendCommand(new MixEffectKeyMaskSetCommand {Mask = MixEffectKeyMaskSetCommand.MaskFlags.MaskTop, MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex=(UpstreamKeyId)KeyerIndex, MaskTop=MaskTop});
+            
+            if(MyInvocation.BoundParameters.ContainsKey("ClipIndex")) {
+                ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Mask = MediaPlayerSourceSetCommand.MaskFlags.ClipIndex, Index = (MediaPlayerId)PlayerIndex, ClipIndex=ClipIndex});
             }
-            if(MyInvocation.BoundParameters.ContainsKey("MaskBottom")) {
-                ATEMref.SendCommand(new MixEffectKeyMaskSetCommand {Mask = MixEffectKeyMaskSetCommand.MaskFlags.MaskBottom, MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex=(UpstreamKeyId)KeyerIndex, MaskBottom=MaskBottom});
-            }
-            if(MyInvocation.BoundParameters.ContainsKey("MaskLeft")) {
-                ATEMref.SendCommand(new MixEffectKeyMaskSetCommand {Mask = MixEffectKeyMaskSetCommand.MaskFlags.MaskLeft, MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex=(UpstreamKeyId)KeyerIndex, MaskLeft=MaskLeft});
-            }
-            if(MyInvocation.BoundParameters.ContainsKey("MaskRight")) {
-                ATEMref.SendCommand(new MixEffectKeyMaskSetCommand {Mask = MixEffectKeyMaskSetCommand.MaskFlags.MaskRight, MixEffectIndex = (MixEffectBlockId)MEID, KeyerIndex=(UpstreamKeyId)KeyerIndex, MaskRight=MaskRight});
-            }
+            
             WriteObject(true);
         }
         protected override void EndProcessing()

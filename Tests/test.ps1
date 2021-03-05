@@ -63,6 +63,11 @@ Set-ATEMTimeCodeConfig  $AtemISO -Mode TimeOfDay
 # Startup state
 Set-ATEMStartupState $AtemISO
 
+# Capture still
+Set-ATEMMediaPlayerSource -ATEMref $AtemISO -PlayerIndex 0 -StillIndex 0
+
+# Capture still
+Set-ATEMMediaPoolCaptureStill -ATEMref $AtemISO
 # Ignore everything below
 
 $AuxiliaryInputMacroOp = [LibAtem.MacroOperations.AuxiliaryInputMacroOp]::new()

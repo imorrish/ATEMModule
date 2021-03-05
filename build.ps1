@@ -7,6 +7,8 @@ Copy-Item "$PSScriptRoot\$module\*" "$PSScriptRoot\output\$module" -Recurse -For
 # start a new PS Session and load module
 #Import-Module "$PSScriptRoot\Output\$module\$module.psd1"
 
+# Debug module
+# https://docs.microsoft.com/en-us/powershell/scripting/dev-cross-plat/vscode/using-vscode-for-debugging-compiled-cmdlets?view=powershell-7.1
 
 #Invoke-Pester "$PSScriptRoot\Tests"
 
