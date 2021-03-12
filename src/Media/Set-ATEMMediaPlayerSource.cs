@@ -11,7 +11,7 @@ namespace ATEMModule
 {
     [Cmdlet(VerbsCommon.Set,"ATEMMediaPlayerSource")]
         [OutputType(typeof(bool))]
-public class ATEMMediaPlayerSource : PSCmdlet
+    public class ATEMMediaPlayerSource : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -50,16 +50,12 @@ public class ATEMMediaPlayerSource : PSCmdlet
         }
         protected override void ProcessRecord()
         {
-            //ATEMref.SendCommand(new MediaPlayerSourceSetCommand {SourceType = (MediaPlayerSource)SourceType});
-            //ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Index = (MediaPlayerId)PlayerIndex, SourceType=(MediaPlayerSource)SourceType});
             if(MyInvocation.BoundParameters.ContainsKey("StillIndex")) {                
                 ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Mask = MediaPlayerSourceSetCommand.MaskFlags.StillIndex, Index = (MediaPlayerId)PlayerIndex, StillIndex = StillIndex});
-            }
-            
+            }            
             if(MyInvocation.BoundParameters.ContainsKey("ClipIndex")) {
                 ATEMref.SendCommand(new MediaPlayerSourceSetCommand {Mask = MediaPlayerSourceSetCommand.MaskFlags.ClipIndex, Index = (MediaPlayerId)PlayerIndex, ClipIndex=ClipIndex});
-            }
-            
+            }            
             WriteObject(true);
         }
         protected override void EndProcessing()
