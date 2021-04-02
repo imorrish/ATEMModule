@@ -68,6 +68,19 @@ Set-ATEMMediaPlayerSource -ATEMref $AtemISO -PlayerIndex 0 -StillIndex 2
 
 # Capture still
 new-ATEMMediaPoolCaptureStill -ATEMref $AtemISO
+
+
+# Easing
+$source = -12
+$dest = 12
+$duration = 100
+for ($i=$source; $i -le $duration; $i++){
+  $step = [System.Math]::Min($i / $duration, 1.0)
+  $easedStep = [ATEMModule.Easing]::EaseInOut($step, "Quadratic")
+  $easedValue = $source + ($dest - $Source) * $easedStep
+  write-host $i, $easedValue
+}
+
 # Ignore everything below
 
 $AuxiliaryInputMacroOp = [LibAtem.MacroOperations.AuxiliaryInputMacroOp]::new()
