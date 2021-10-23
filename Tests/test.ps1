@@ -7,6 +7,7 @@ Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
 $AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
+$AtemProxy = Add-ATEMSwitch -IPAddress "192.168.1.83"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
