@@ -31,7 +31,7 @@ namespace ATEMModule
             }
         protected override void ProcessRecord()
             {
-                    ATEMref.SendCommand(new StreamingLatencySetCommand { LowLatency=Enabled});
+                    ATEMref.SendCommand(new StreamingLatencyCommand { LowLatency=Enabled});
             }
         protected override void EndProcessing()
             {

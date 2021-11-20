@@ -6,8 +6,7 @@ Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
 
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
-$AtemISO = Add-ATEMSwitch -IPAddress "192.168.1.126"
-$AtemProxy = Add-ATEMSwitch -IPAddress "192.168.1.83"
+$Atem = Add-ATEMSwitch -IPAddress "192.168.1.161"
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
@@ -19,7 +18,7 @@ Set-ATEMMECut -ATEMref $AtemMini -MEID 0
 Set-ATEMMEAutoTransition -ATEMref $AtemMini -MEID 0
 Set-ATEMMEAutoTransition $AtemMini 0
 
-Set-ATEMMEFadeToBlack $AtemMini 0
+Set-ATEMMEFadeToBlack $Atem 0
 
 #DSK
 Set-ATEMDskFillSource $AtemISO 0 1
@@ -75,13 +74,20 @@ new-ATEMMediaPoolCaptureStill -ATEMref $AtemISO
 $source = -12
 $dest = 12
 $duration = 100
-for ($i=$source; $i -le $duration; $i++){
+for ($i=$source; $i -le $dest; $i++){
   $step = [System.Math]::Min($i / $duration, 1.0)
   $easedStep = [ATEMModule.Easing]::EaseInOut($step, "Quadratic")
   $easedValue = $source + ($dest - $Source) * $easedStep
-  write-host $i, $easedValue
+  write-host "$i, $step, $easedValue"
+  start-sleep -m 20
 }
 
+for ($i=1; $i -le 100; $i++){
+write-host $i
+#start-sleep -m 10
+}
+
+clear-at
 # Ignore everything below
 
 $AuxiliaryInputMacroOp = [LibAtem.MacroOperations.AuxiliaryInputMacroOp]::new()
