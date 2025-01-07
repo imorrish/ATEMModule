@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>ATEMModule</AssemblyName>
     <AssemblyVersion>8.5.1.0</AssemblyVersion>
     <Version>8.5.1.0</Version>
@@ -12,10 +12,11 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0-preview-06">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\LibAtem\LibAtem\LibAtem.csproj" />
+    <ProjectReference Include="..\LibAtem\LibAtem\LibAtem.csproj" />
   </ItemGroup>
 
 </Project>

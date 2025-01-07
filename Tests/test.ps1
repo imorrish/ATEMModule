@@ -1,16 +1,27 @@
 #Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.dll # use for testing LibATEM commands
 # Add-Type -Path .\bin\Debug\netstandard2.0\LibAtem.Discovery.dll
 
+Import-Module '.\src\bin\Debug\net6.0\ATEMModule.dll'
 Import-Module '.\src\bin\Debug\netstandard2.0\ATEMModule.dll'
 Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
+#C:\git\ATEMModule\src\bin\Debug\net6.0\ATEMModule.dll
 
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
-$Atem = Add-ATEMSwitch -IPAddress "192.168.1.161"
+$Atem = Add-ATEMSwitch -IPAddress "192.168.1.116"
+
+# events
+Register-ObjectEvent -InputObject $Atem -EventName "OnDisconnect" -Action {write-host "disconnected"}
+Register-ObjectEvent -InputObject $Atem -SourceIdentifier "OnReceive" -EventName "OnReceive" -Action {$cmd = $event.sourceEventArgs.command; write-host $cmd}
+
+Unregister-event -SourceIdentifier "OnReceive" 
+
+#Media functions
+New-ATEMMediaPoolCaptureStill -ATEMref $atem
 
 #program and preview testing
 Set-AtemProgramSource -ATEMref $AtemMini -MEID 0 -InputID 1
-Set-ATEMMEProgramSource $AtemISO 0 2
+Set-ATEMMEProgramSource $Atem 0 2
 set-ATEMMEPreviewSource $AtemMini 0 2
 
 Set-ATEMMECut -ATEMref $AtemMini -MEID 0
@@ -166,3 +177,5 @@ $AudioFollowVideo=[LibAtem.Commands.Audio.Fairlight.FairlightMixerMasterProperti
 $AudioFollowVideo
 $AudioFollowVideo.AudioFollowVideoCrossfadeTransitionEnabled =0
 $AtemMini.SendCommand($AudioFollowVideo)
+
+
