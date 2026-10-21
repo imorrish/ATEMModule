@@ -1,6 +1,6 @@
 # ATEMModule
 
-This is a PowerShell module for controling Blackmagic ATEM video switches using LibATEM https://github.com/LibAtem/LibAtem
+ATEMModule is a PowerShell binary module (compiled C# cmdlets) that controls Blackmagic ATEM video switchers. It's a thin PowerShell-facing wrapper over LibAtem (a vendored git submodule at LibAtem/), which implements the ATEM network protocol over UDP.
 
 It is written for .Net Core 3.0 and has been tested on Windows, Mac OSx and Linux (including Raspberry Pi)
 
