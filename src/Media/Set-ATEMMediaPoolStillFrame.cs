@@ -1,27 +1,19 @@
 using System;
 using System.IO;
-using System.Threading;
-using System.Management.Automation;
-using System.Management.Automation.Runspaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using LibAtem.Commands;
-using LibAtem.Commands.Media;
+using System.Management.Automation;
 using LibAtem.Common;
 using LibAtem.Net;
 using LibAtem.Net.DataTransfer;
 using LibAtem.Util.Media;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace ATEMModule
 {
-    [Cmdlet(VerbsCommon.Set,"ATEMMediaPoolStillFrame")]
-        [OutputType(typeof(bool))]
-        public class ATEMMediaPoolStillFrame : PSCmdlet
+    [Cmdlet(VerbsCommon.Set, "ATEMMediaPoolStillFrame")]
+    [OutputType(typeof(bool))]
+    public class ATEMMediaPoolStillFrame : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -29,62 +21,68 @@ namespace ATEMModule
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public AtemClient ATEMref { get; set; }
+
         [Parameter(
             Mandatory = true,
             Position = 1,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public uint stillID { get; set; }
+
         [Parameter(
             Mandatory = true,
             Position = 2,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public String FileName { get; set; }
-         [Parameter(
-            Mandatory = true,
-            Position = 1,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true)]
         public string FilePath { get; set; }
 
-         
+        [Parameter(
+            Position = 3,
+            ValueFromPipeline = true,
+            ValueFromPipelineByPropertyName = true)]
+        public string FileName { get; set; }
+
+        [Parameter()]
+        public int TimeoutSeconds { get; set; } = 30;
+
         protected override void BeginProcessing()
         {
             WriteVerbose("Begin!");
         }
 
-        
         protected override void ProcessRecord()
         {
-            //Image = new Image<RGBA32>;
-            //Image.Load<Rgba32>(FilePath);
-            using Image image = SixLabors.ImageSharp.Image.Load<Rgba32>(FilePath);
-            var ms = new MemoryStream();
-            image.Save(ms, image.Metadata.DecodedImageFormat);
-        
-            
-            //byte[] rawBytes = Convert.FromBase64String(base64Image);
+            if (string.IsNullOrWhiteSpace(FilePath))
+                throw new PSArgumentNullException(nameof(FilePath), "A file path is required.");
 
-            //using Image<Rgba32> image = Image.Load(rawBytes);
-            //byte[] rgbaBytes = GetBytes(image);
-            
-            //byte[] rgbaBytes = image.GetPixelSpan().ToArray();
-            
-            var frame = AtemFrame.FromRGBA(FileName, ms.ToArray(), ColourSpace.BT709);
-            //var frame = AtemFrame.FromRGBA(FileName, rgbaBytes, ColourSpace.BT709); 
-            var completion = new TaskCompletionSource<bool>();
-            var job = new UploadMediaStillJob(stillID, frame,
-                (success) =>
-                {                    
-                    completion.SetResult(success);
-                });
-            ATEMref.DataTransfer.QueueJob(job);          
-// some way to wait for the job to complete using completion result
-        Thread.Sleep(10000);
+            string imageName = string.IsNullOrWhiteSpace(FileName)
+                ? Path.GetFileNameWithoutExtension(FilePath)
+                : FileName;
+
+            using var image = Image.Load<Rgba32>(FilePath);
+            var rgbaBytes = new byte[image.Width * image.Height * 4];
+            image.CopyPixelDataTo(rgbaBytes);
+
+            var frame = AtemFrame.FromRGBA(imageName, rgbaBytes, ColourSpace.BT709);
+            var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var timeout = TimeSpan.FromSeconds(TimeoutSeconds);
+
+            var job = new UploadMediaStillJob(stillID, frame, success => completion.TrySetResult(success), timeout);
+            ATEMref.DataTransfer.QueueJob(job);
+
+            if (!completion.Task.Wait(timeout))
+            {
+                throw new TimeoutException($"Timed out uploading media still '{imageName}' to ATEM still index {stillID}.");
+            }
+
+            if (!completion.Task.Result)
+            {
+                throw new RuntimeException($"Upload of media still '{imageName}' to ATEM still index {stillID} failed.");
+            }
+
             WriteObject(true);
         }
-    
+
         protected override void EndProcessing()
         {
             WriteVerbose("End!");

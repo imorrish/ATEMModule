@@ -1,8 +1,21 @@
 $module = 'ATEMModule'
 Push-Location $PSScriptroot
 
-dotnet build $PSScriptRoot\src -o $PSScriptRoot\output\$module\bin
-Copy-Item "$PSScriptRoot\$module\*" "$PSScriptRoot\output\$module" -Recurse -Force
+$buildOutput = Join-Path $PSScriptRoot 'output\ATEMModule\bin'
+New-Item -ItemType Directory -Force -Path $buildOutput | Out-Null
+
+dotnet build "$PSScriptRoot\src\ATEMModule.csproj" -o $buildOutput
+
+$moduleFiles = @(
+    (Join-Path $PSScriptRoot 'src\ATEMModule.psd1'),
+    (Join-Path $PSScriptRoot 'src\ATEMModule.psm1')
+)
+
+foreach ($file in $moduleFiles) {
+    if (Test-Path $file) {
+        Copy-Item $file (Join-Path $PSScriptRoot 'output\ATEMModule') -Force
+    }
+}
 
 # start a new PS Session and load module
 #Import-Module "$PSScriptRoot\Output\$module\$module.psd1"
