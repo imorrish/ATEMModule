@@ -40,7 +40,7 @@ namespace ATEMModule
         public VideoModeResolution Resolution { get; set; } = VideoModeResolution._1080;
 
         [Parameter()]
-        public int TimeoutSeconds { get; set; } = 30;
+        public int TimeoutSeconds { get; set; } = 10;
 
         protected override void ProcessRecord()
         {

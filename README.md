@@ -38,6 +38,24 @@ Set-ATEMMEFadeToBlack
 Set-ATEMAuxSource  
 Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $true  
 
+### Media still uploads
+
+The image passed to `Set-ATEMMediaPoolStillFrame` must match the switcher's
+video resolution exactly. The `-Resolution` parameter defaults to `_1080`
+(1920 x 1080); specify the switcher's actual resolution for other video modes.
+Resize or pad an image before uploading if its dimensions do not match.
+Use the same resolution when downloading a still.
+
+```powershell
+Set-ATEMMediaPoolStillFrame -ATEMref $AtemMini -stillID 0 -FilePath '.\still.png' -Resolution _1080
+Get-ATEMMediaPoolStillFrame -ATEMref $AtemMini -stillID 0 -FilePath '.\downloaded.png' -Resolution _1080
+```
+
+For a hardware transfer check, run
+`.\Tests\test-media-still-transfer.ps1 -UploadPath '.\still.png' -Resolution _1080 -AtemIp '192.168.1.10'`.
+This overwrites the selected still slot; compare the downloaded image with the
+original, allowing for colour-conversion differences.
+
 ### License
 
 LibAtem is distributed under the GNU Lesser General Public License LGPLv3 or higher, see the file LICENSE for details.

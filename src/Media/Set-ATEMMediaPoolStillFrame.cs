@@ -43,7 +43,10 @@ namespace ATEMModule
         public string FileName { get; set; }
 
         [Parameter()]
-        public int TimeoutSeconds { get; set; } = 30;
+        public VideoModeResolution Resolution { get; set; } = VideoModeResolution._1080;
+
+        [Parameter()]
+        public int TimeoutSeconds { get; set; } = 10;
 
         protected override void BeginProcessing()
         {
@@ -60,6 +63,17 @@ namespace ATEMModule
                 : FileName;
 
             using var image = Image.Load<Rgba32>(FilePath);
+            if (!Enum.IsDefined(typeof(VideoModeResolution), Resolution))
+                throw new PSArgumentException($"Invalid video resolution: {Resolution}.", nameof(Resolution));
+
+            var size = Resolution.GetSize();
+            if (image.Width != size.Item1 || image.Height != size.Item2)
+            {
+                throw new PSArgumentException(
+                    $"Image is {image.Width}x{image.Height}, but resolution {Resolution} requires {size.Item1}x{size.Item2}. Resize or pad the image before uploading.",
+                    nameof(FilePath));
+            }
+
             var rgbaBytes = new byte[image.Width * image.Height * 4];
             image.CopyPixelDataTo(rgbaBytes);
 
