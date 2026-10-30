@@ -15,7 +15,7 @@
     ModuleVersion = '1.0.0'
     
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Core')
     
     # ID used to uniquely identify this module
     GUID = 'dac8752f-f614-40ae-ad57-58d717df7227'
@@ -33,7 +33,7 @@
     Description = 'Module for Blackmagic Design ATEM.'
     
     # Minimum version of the Windows PowerShell engine required by this module
-    # PowerShellVersion = ''
+    PowerShellVersion = '7.4'
     
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -54,7 +54,7 @@
     # RequiredModules = @()
     
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @('ATEMModule.dll', 'LibAtem.dll')
+    RequiredAssemblies = @('bin/LibAtem.dll', 'bin/ATEMModule.dll')
     
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
     # ScriptsToProcess = @()
@@ -66,7 +66,7 @@
     # FormatsToProcess = @()
     
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    NestedModules = @('ATEMModule.dll')
+    NestedModules = @('bin/ATEMModule.dll')
 
     AliasesToExport = @(
 
@@ -74,9 +74,7 @@
     FunctionsToExport = @(
 
     )
-    CmdletsToExport = @(
-    
-    )
+    CmdletsToExport = @('*')
     
     VariablesToExport = ''
     # DSC resources to export from this module

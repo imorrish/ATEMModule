@@ -13,6 +13,21 @@ Download a version from https://1drv.ms/u/s!ApGpqMMpRLhik5E1tVgBIJ0eq5wx2A?e=3jg
 Install .net runtime or framework for Mac, Linux or Windows
 from https://dotnet.microsoft.com/download
 
+### Release packages
+
+Release archives contain the same portable .NET 8 module for Windows, Linux,
+and macOS. PowerShell 7.4 or newer is required. Extract the archive and import
+the module manifest:
+
+```powershell
+Import-Module ./ATEMModule/ATEMModule.psd1
+```
+
+To build the three archives, initialise the LibAtem submodule, restore the
+project dependencies, and run `./build-release.ps1`. The archives are written
+to `artifacts/releases`; use `-OutputPath` to choose another directory and
+`-Force` to replace existing archives.
+
 ### Functionality
 
 You can connect to multiple ATEM's. E.g.  
@@ -37,6 +52,24 @@ Set-ATEMMEFadeToBlack
 
 Set-ATEMAuxSource  
 Set-ATEMStreamingStatus -ATEMref $AtemMini -StreamStatus $true  
+
+### Media still uploads
+
+The image passed to `Set-ATEMMediaPoolStillFrame` must match the switcher's
+video resolution exactly. The `-Resolution` parameter defaults to `_1080`
+(1920 x 1080); specify the switcher's actual resolution for other video modes.
+Resize or pad an image before uploading if its dimensions do not match.
+Use the same resolution when downloading a still.
+
+```powershell
+Set-ATEMMediaPoolStillFrame -ATEMref $AtemMini -stillID 0 -FilePath '.\still.png' -Resolution _1080
+Get-ATEMMediaPoolStillFrame -ATEMref $AtemMini -stillID 0 -FilePath '.\downloaded.png' -Resolution _1080
+```
+
+For a hardware transfer check, run
+`.\Tests\test-media-still-transfer.ps1 -UploadPath '.\still.png' -Resolution _1080 -AtemIp '192.168.1.10'`.
+This overwrites the selected still slot; compare the downloaded image with the
+original, allowing for colour-conversion differences.
 
 ### License
 

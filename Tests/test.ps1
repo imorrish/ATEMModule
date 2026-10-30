@@ -4,11 +4,13 @@
 Import-Module '.\src\bin\Debug\net6.0\ATEMModule.dll'
 Import-Module '.\src\bin\Debug\netstandard2.0\ATEMModule.dll'
 Import-Module ".\Output\ATEMModule\bin\ATEMModule.dll"
+
+Import-Module 'E:\Git\ATEMModule\output\ATEMModule\bin\ATEMModule.dll'
 #C:\git\ATEMModule\src\bin\Debug\net6.0\ATEMModule.dll
 
 $AtemTVSHD = Add-ATEMSwitch -IPAddress "192.168.1.8"
 $AtemMini = Add-ATEMSwitch -IPAddress "192.168.1.10"
-$Atem = Add-ATEMSwitch -IPAddress "192.168.1.116"
+$Atem = Add-ATEMSwitch -IPAddress "192.168.1.124"
 
 # events
 Register-ObjectEvent -InputObject $Atem -EventName "OnDisconnect" -Action {write-host "disconnected"}
