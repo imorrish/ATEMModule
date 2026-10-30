@@ -13,6 +13,21 @@ Download a version from https://1drv.ms/u/s!ApGpqMMpRLhik5E1tVgBIJ0eq5wx2A?e=3jg
 Install .net runtime or framework for Mac, Linux or Windows
 from https://dotnet.microsoft.com/download
 
+### Release packages
+
+Release archives contain the same portable .NET 8 module for Windows, Linux,
+and macOS. PowerShell 7.4 or newer is required. Extract the archive and import
+the module manifest:
+
+```powershell
+Import-Module ./ATEMModule/ATEMModule.psd1
+```
+
+To build the three archives, initialise the LibAtem submodule, restore the
+project dependencies, and run `./build-release.ps1`. The archives are written
+to `artifacts/releases`; use `-OutputPath` to choose another directory and
+`-Force` to replace existing archives.
+
 ### Functionality
 
 You can connect to multiple ATEM's. E.g.  
